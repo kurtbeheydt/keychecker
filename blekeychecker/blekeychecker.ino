@@ -2,10 +2,12 @@
 #include <BLEUtils.h>
 #include <BLEScan.h>
 #include <BLEAdvertisedDevice.h>
+
 #include <Adafruit_NeoPixel.h>
 
 #define LEDPIN 14
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(3, LEDPIN, NEO_GRB + NEO_KHZ800);
+
 uint32_t colorConnected = strip.Color(255, 255, 255); 
 uint32_t colorDisconnected = strip.Color(255, 0, 0); 
 
@@ -24,12 +26,7 @@ bool deviceFound = false;
 class MyAdvertisedDeviceCallbacks: public BLEAdvertisedDeviceCallbacks {
   void onResult(BLEAdvertisedDevice advertisedDevice) {
    pServerAddress = new BLEAddress(advertisedDevice.getAddress());
-/*
-    Serial.print("BLE Advertised Device found: ");
-    Serial.println(advertisedDevice.toString().c_str());
-    Serial.print("device address: ");
-    Serial.println(pServerAddress->toString().c_str());
-*/
+
     if (strcmp(pServerAddress->toString().c_str(), tagAddress.c_str()) == 0) {
       int bleRssi = advertisedDevice.getRSSI() * -1;
       Serial.print("rssi: ");
@@ -43,7 +40,7 @@ class MyAdvertisedDeviceCallbacks: public BLEAdvertisedDeviceCallbacks {
 };
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   Serial.println("===== Starting Iron Mask =====");
 
   strip.begin();
